@@ -16,9 +16,14 @@ source venv/bin/activate
 
 pip install -r requirements.txt
 
+# Run tests
+python manage.py test
+
+# Run server
 python manage.py runserver
 ```
 Default *username: admin, password: 12345678*
+
 
 ## REST API
 <details>
