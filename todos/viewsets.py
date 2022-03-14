@@ -29,13 +29,13 @@ class TodoViewSet(viewsets.ModelViewSet):
             request(obj): Django request object.
 
         Returns:
-            json: Requested todo item detail.
+            json: Requested todo item content.
 
         """
         todo_serializer = TodoSerializer(data=request.data)
         if todo_serializer.is_valid():
             Todo.objects.get_or_create(
-                detail=todo_serializer.validated_data.get('detail'),
+                content=todo_serializer.validated_data.get('content'),
                 done=todo_serializer.validated_data.get('done'),
                 owner=self.request.user
             )
@@ -50,7 +50,7 @@ class TodoViewSet(viewsets.ModelViewSet):
             pk(int): unique primary key of todo item.
 
         Returns:
-            json: Requested todo item detail.
+            json: Requested todo item content.
 
         """
         queryset = Todo.objects.filter(owner=self.request.user)
@@ -66,7 +66,7 @@ class TodoViewSet(viewsets.ModelViewSet):
             pk(int): unique primary key of todo item.
 
         Returns:
-            json: Requested todo item detail.
+            json: Requested todo item content.
 
         """
         queryset = Todo.objects.filter(owner=self.request.user)
@@ -85,7 +85,7 @@ class TodoViewSet(viewsets.ModelViewSet):
             pk(int): unique primary key of todo item.
 
         Returns:
-            json: Requested todo item detail.
+            json: Requested todo item content.
 
         """
         queryset = Todo.objects.filter(owner=self.request.user)

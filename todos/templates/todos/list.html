@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Todos List{% endblock %}
+{% block content %}
+<div class="form-row">
+    <div class="form-group row">
+        <div class="col-md-10">
+            <input class="form-control" type="text" id="todo-content">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success btn-block" id="save-todo">Add</button>
+        </div>
+    </div>
+
+</div>
+<br/>
+<div class="form-row">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row" id="todo-list">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<br/>
+{% endblock %}
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    let url = '{% url 'todo-list' %}';
+    let base_url = '{% url 'index' %}';
+    let todo_list = $("#todo-list")
+    $.ajax({
+        type: "GET",
+        url: url,
+        contentType: "application/json;",
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            $.each(data, function(index, item){
+                let completed = 'Completed';
+                if(!item.done){
+                    completed = 'Not Completed';
+                }
+                let todo_object = '<div class="row" ><div class="col-md-9"><a href="'+base_url+'detail/'+item.id+'">'+item.content+'</a></div><div class="col-md-3">'+completed+'</div></div>';
+                todo_list.append(todo_object);
+            });
+        }
+    });
+    $("#save-todo").on("click", function(){
+        let jsonObj = new Object();
+        jsonObj.content = $("#todo-content").val();
+        jsonObj.done = $("#done").is(':checked');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(jsonObj),
+            contentType: "application/json;",
+            success: function(data) {
+                location.reload();
+            }
+        });
+    })
+});
+</script>
+{% endblock %}

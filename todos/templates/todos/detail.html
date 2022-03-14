@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Todos Detail{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="input-group md-12">
+            <div class="col-md-10">
+                 <input class="form-control" type="text" id="content">
+            </div>
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Done" id="done">
+            </div>
+            <button class="btn btn-primary btn-block" id="update-todo">Update</button>
+             <button class="btn btn-danger btn-block" id="delete-todo" onclick="delete_todo()">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function refresh(){
+    var todo_id = window.location.href.split("/").pop();
+    let url = '{% url 'todo-list' %}'+todo_id+'/';
+    $.ajax({
+        type: "GET",
+        url: url,
+        contentType: "application/json;",
+        success: function(data) {
+            $("#content").val(data.content);
+            $("#done").prop("checked", data.done);
+        }
+    });
+}
+function delete_todo(){
+    var todo_id = window.location.href.split("/").pop();
+    let url = '{% url 'todo-list' %}'+todo_id+'/';
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        contentType: "application/json;",
+        success: function(data) {
+            alert("todo deleted");
+            window.location.href = '{% url 'index' %}';
+        }
+    });
+}
+$(document).ready(function() {
+    var todo_id = window.location.href.split("/").pop();
+    let url = '{% url 'todo-list' %}'+todo_id+'/';
+    let todo_content = $("#content");
+    let todo_done = $("#done");
+    refresh();
+
+    $("#update-todo").on("click", function(){
+        let jsonObj = new Object();
+        jsonObj.content = todo_content.val();
+        jsonObj.done = todo_done.is(':checked');
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: JSON.stringify(jsonObj),
+            contentType: "application/json;",
+            success: function(data) {
+                location.reload();
+            }
+        });
+    })
+});
+</script>
+{% endblock %}

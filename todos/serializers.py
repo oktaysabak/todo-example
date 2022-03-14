@@ -8,7 +8,7 @@ class TodoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Todo
-        fields = ('id', 'detail', 'done', 'created_at')
+        fields = ('id', 'content', 'done', 'created_at')
         ordering = ('-created_at', )
 
     def to_representation(self, instance):
