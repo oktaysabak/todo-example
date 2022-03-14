@@ -39,7 +39,7 @@ class TodoViewSet(viewsets.ModelViewSet):
         if todo_serializer.is_valid():
             Todo.objects.get_or_create(
                 content=todo_serializer.validated_data.get('content'),
-                done=todo_serializer.validated_data.get('done'),
+                done=todo_serializer.validated_data.get('done', False),
                 owner=self.request.user
             )
         return Response(todo_serializer.validated_data, status=status.HTTP_201_CREATED)

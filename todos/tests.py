@@ -51,8 +51,7 @@ class TestTodoAPI(TestCase):
 
     def test_create_todo(self):
         data = {
-            'content': 'new content',
-            'done': False
+            'content': 'new content'
         }
 
         response = self.client.post(
