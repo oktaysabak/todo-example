@@ -1,5 +1,5 @@
 # Todo Application
-Create, Update, Delete, List todos. Each user can CRUD own todos.
+Create, Update, Delete, List todos. Each user could read/update/create/delete own todos.
 
 Tech Stack:
 - Django
@@ -187,9 +187,8 @@ curl --location --request GET 'http://localhost:8000/api/todos/?seacrh=todo&done
 Default *username: admin, password: 12345678*
 Login via django admin [login url](http://localhost:8000/admin/login/) than go to [index page](http://localhost:8000/)
 
-Use interface to CRUD todo items. 
 
-Functions:
+Actions:
 - Click `Add` to create todo item with status `Not Completed`
 - Click item detail to go item detail.
 - Click `Update` to update existing todo content or status.
