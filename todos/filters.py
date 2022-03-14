@@ -6,7 +6,7 @@ from todos.models import Todo
 class TodoFilter(filters.FilterSet):
     """Filter class for filtering todos."""
 
-    content = filters.CharFilter(field_name='content')
+    content = filters.CharFilter(field_name='content', lookup_expr='icontains')
     done = filters.BooleanFilter(field_name='done')
 
     class Meta:

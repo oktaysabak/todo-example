@@ -3,13 +3,25 @@
 {% block content %}
 <div class="form-row">
     <div class="form-group row">
-        <div class="col-md-10">
+        <div class="col-md-6">
             <input class="form-control" type="text" id="todo-content">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <button class="btn btn-success btn-block" id="save-todo">Add</button>
         </div>
+        <div class="col-md-3">
+            <div class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search-content">
+                <select class="form-control" id="is_done">
+                    <option value="">All</option>
+                    <option value="true">Completed</option>
+                    <option value="false">Not Completed</option>
+                </select>
+              <button class="btn btn-outline-success" id="search">Search</button>
+            </div>
+        </div>
     </div>
+
 
 </div>
 <br/>
@@ -28,17 +40,16 @@
 {% endblock %}
 {% block extra_js %}
 <script>
-$(document).ready(function() {
-    let url = '{% url 'todo-list' %}';
+function get_todos(url){
     let base_url = '{% url 'index' %}';
     let todo_list = $("#todo-list")
+    todo_list.empty();
     $.ajax({
         type: "GET",
         url: url,
         contentType: "application/json;",
         dataType: "json",
         success: function(data) {
-            console.log(data);
             $.each(data, function(index, item){
                 let completed = 'Completed';
                 if(!item.done){
@@ -49,6 +60,10 @@ $(document).ready(function() {
             });
         }
     });
+}
+$(document).ready(function() {
+    let url = '{% url 'todo-list' %}';
+    get_todos(url);
     $("#save-todo").on("click", function(){
         let jsonObj = new Object();
         jsonObj.content = $("#todo-content").val();
@@ -62,7 +77,13 @@ $(document).ready(function() {
                 location.reload();
             }
         });
-    })
+    });
+    $("#search").on("click", function(){
+        let url = '{% url 'todo-list' %}';
+        let search_content = $("#search-content").val();
+        let done = $("#is_done").val();
+        get_todos(url+'?search='+search_content+'&done='+done);
+    });
 });
 </script>
 {% endblock %}

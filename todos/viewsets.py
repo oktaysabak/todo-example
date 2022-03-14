@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 
 from todos.filters import TodoFilter
@@ -15,6 +16,8 @@ class TodoViewSet(viewsets.ModelViewSet):
 
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ('content', )
     filterset_class = TodoFilter
 
     def get_queryset(self):
